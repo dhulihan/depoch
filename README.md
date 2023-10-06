@@ -18,3 +18,7 @@ $ depoch 1696617071
 echo "1696617071" | depoch
 2023-10-06T12:31:11-06:00
 ```
+
+## FAQ
+
+* Why not just use `date`? Because it does not support STDIN, and the CLI flags differ between BSD/GNU.
