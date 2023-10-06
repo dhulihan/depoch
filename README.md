@@ -5,7 +5,7 @@ Convert an epoch timestamp to a human readable date.
 ## Install
 
 ```sh
-go install github.com/dhulian/depoch
+ go install github.com/dhulihan/depoch@latest
 ```
 
 ## Use
