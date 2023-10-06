@@ -1,6 +1,6 @@
 # depoch
 
-Convert an epoch timestamp to a human readable date.
+Convert an epoch timestamp to a human readable ([RFC3339](https://ijmacd.github.io/rfc3339-iso8601/)) timestamp.
 
 ## Install
 
