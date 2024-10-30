@@ -8,6 +8,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/araddon/dateparse"
 )
 
 func main() {
@@ -31,22 +33,28 @@ func main() {
 		s = os.Args[1]
 	}
 
-	t, err := UnixEpochToTime(s)
-	if err != nil {
-		panic(err)
-	}
+	// check if number. we assume epoch if so.
+	_, err := strconv.ParseInt(s, 10, 64)
+	if err != nil { // not a number, perform reverse conversion: (string to epoch)
+		t, err := StringToTime(s)
+		if err != nil {
+			panic(err)
+		}
 
-	fmt.Printf("%s", t.Format(time.RFC3339))
+		// TODO: support UnixMilli, UnixMicro, UnixNano
+		fmt.Printf("%d", t.Unix())
+	} else {
+		t, err := UnixEpochToTime(s)
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Printf("%s", t.Format(time.RFC3339))
+	}
 }
 
 // UnixEpochToTime converts a variety of unix epochs to go times
 func UnixEpochToTime(s string) (time.Time, error) {
-	// check if number
-	_, err := strconv.ParseInt(s, 10, 64)
-	if err != nil {
-		return time.Time{}, nil
-	}
-
 	var secStr string
 	var nsecStr string
 
@@ -70,5 +78,15 @@ func UnixEpochToTime(s string) (time.Time, error) {
 	}
 
 	t := time.Unix(sec, nsec)
+	return t, nil
+}
+
+// StringToTime converts an arbitrary string to a time.Time.
+func StringToTime(s string) (time.Time, error) {
+	t, err := dateparse.ParseAny(s)
+	if err != nil {
+		return time.Time{}, err
+	}
+
 	return t, nil
 }
